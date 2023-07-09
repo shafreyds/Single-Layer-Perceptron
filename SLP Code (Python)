@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Perceptron:
+    def __init__(self, input_size, learning_rate=0.1, num_iterations=100):
+        self.weights = np.zeros(input_size + 1)
+        self.lr = learning_rate
+        self.num_iterations = num_iterations
+    
+    def activation_function(self, x):
+        return x
+    
+    def predict(self, x):
+        z = np.dot(x, self.weights[1:]) + self.weights[0]
+        return self.activation_function(z)
+    
+    def fit(self, X, y):
+        for i in range(self.num_iterations):
+            for j in range(len(X)):
+                x = X[j]
+                y_pred = self.predict(x)
+                error = y[j] - y_pred
+                self.weights[1:] += self.lr * error * x
+                self.weights[0] += self.lr * error
+                
+X = np.array([[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10]])
+y = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+perceptron = Perceptron(input_size=2)
+perceptron.fit(X, y)
+
+plt.scatter(X[:,0], y, color='red')
+plt.plot(X[:,0], perceptron.predict(X), color='blue')
+plt.show()
